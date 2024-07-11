@@ -1,0 +1,13 @@
+diff --git a/demo/demo-1.ts b/demo/demo-1.ts
+index ffc09dbd..79ca0bae 100644
+--- a/demo/demo-1.ts
++++ b/demo/demo-1.ts
+@@ -16,7 +16,7 @@ const holdCheckbox = getInput("hold");
+ const muteCheckbox = getInput("mute");
+ 
+ // WebSocket Server URL
+-const webSocketServer = "wss://edge.sip.onsip.com";
++const webSocketServer = `wss://${window.location.hostname}:9876`;
+ serverSpan.innerHTML = webSocketServer;
+ 
+ // Destination URI

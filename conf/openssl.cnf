@@ -1,0 +1,22 @@
+[req]
+default_bits = 2048
+prompt = no
+default_md = sha256
+distinguished_name = dn
+x509_extensions = v3_req
+req_extensions = v3_req
+
+[dn]
+C = US
+ST = California
+L = San Francisco
+O = My Company
+OU = My Division
+CN = localhost
+emailAddress = email@example.com
+
+[v3_req]
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = localhost
