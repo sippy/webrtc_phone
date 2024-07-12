@@ -9,7 +9,6 @@ RTPP_LOG_LEVEL="${RTPP_LOG_LEVEL:-"dbug"}"
 CFILE="/webrtc_phone/server.crt"
 KFILE="/webrtc_phone/server.key"
 WROOT="/webrtc_phone/SIP.js/demo"
-PNUM=443
 MIN_RTP_PORT=32000
 MAX_RTP_PORT=34000
 
@@ -18,7 +17,7 @@ RMODDIR="/usr/local/lib/rtpproxy"
 
 BDIR="/webrtc_phone/b2bua"
 
-npm exec -- http-server -S -C "${CFILE}" -K "${KFILE}" -p ${PNUM} "${WROOT}" &
+nginx -c /webrtc_phone/nginx.conf &
 HSERV_PID="${!}"
 
 /usr/local/bin/rtpproxy_debug -f -F -s "${RSOCK}" \
