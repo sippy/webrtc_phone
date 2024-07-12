@@ -10,6 +10,7 @@ RTPP_NODEBUG="${RTPP_NODEBUG:0}"
 CFILE="/webrtc_phone/server.crt"
 KFILE="/webrtc_phone/server.key"
 WROOT="/webrtc_phone/SIP.js/demo"
+PNUM=443
 MIN_RTP_PORT=32000
 MAX_RTP_PORT=34000
 
@@ -18,7 +19,7 @@ RMODDIR="/usr/local/lib/rtpproxy"
 
 BDIR="/webrtc_phone/b2bua"
 
-nginx -c /webrtc_phone/nginx.conf &
+npm exec -- http-server -S -C "${CFILE}" -K "${KFILE}" -p ${PNUM} "${WROOT}" &
 HSERV_PID="${!}"
 
 if [ ${RTPP_NODEBUG} -eq 0 ]
