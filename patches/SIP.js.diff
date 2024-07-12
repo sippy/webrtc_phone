@@ -11,3 +11,18 @@ index ffc09dbd..79ca0bae 100644
  serverSpan.innerHTML = webSocketServer;
  
  // Destination URI
+diff --git a/demo/demo-users.ts b/demo/demo-users.ts
+index a1591244..f47329df 100644
+--- a/demo/demo-users.ts
++++ b/demo/demo-users.ts
+@@ -33,8 +33,8 @@ const domain = "sipjs.onsip.com";
+ 
+ export const nameAlice = "Alice";
+ export const uriAlice = "sip:alice." + token + "@" + domain;
+-export const webSocketServerAlice = "wss://edge.sip.onsip.com";
++export const webSocketServerAlice = `wss://${window.location.hostname}:9876`;
+ 
+ export const nameBob = "Bob";
+ export const uriBob = "sip:bob." + token + "@" + domain;
+-export const webSocketServerBob = "wss://edge.sip.onsip.com";
++export const webSocketServerBob = `wss://${window.location.hostname}:9876`;
