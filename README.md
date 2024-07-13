@@ -1,6 +1,8 @@
 [![Build Docker image](https://github.com/sippy/webrtc_phone/actions/workflows/build.yml/badge.svg)](https://github.com/sippy/webrtc_phone/actions/workflows/build.yml)
 
-# What is it?
+# Sippy WebRTC Phone
+
+## What is it?
 
 This is a technology demo integrating Sippy RTPProxy and Sippy B2BUA with
 WebRTC-compatible clients. It includes four main components:
@@ -19,21 +21,28 @@ When the user initiates a call, the B2BUA/RTPProxy sets up two RTP sessions
 (one encrypted and one plain) and initiates an outbound SIP call to the SIP
 destination controlled by the `OUTBOUND_ROUTE` environment variable.
 
-# Usage
+## Usage
 
 ```bash
 docker pull sippylabs/webrtc_phone:latest
 docker run -it --name webrtc_phone -P --network=host -e OUTBOUND_ROUTE="user@sip.mypbx.net;auth=foo:bar" -d sippylabs/webrtc_phone:latest
 ```
 
-# Introspection
+## Introspection
 
 The container produces various SIP/RTP/WSS logs that can be inspected using
 the `docker log` command. The amount of RTP logs can be controlled by the
 `RTPP_LOG_LEVEL` environment variable. Possible values are `DBUG`, `INFO`,
 `WARN`, `ERR`, and `CRIT` (in decreasing order of verbosity).
 
-# Caveats and Limitations
+## Performance
+
+With the current configuration a single container should be able to support
+up to 500 concurrent users fully utilizing up to 5-6 cores. If you try to
+use it in a performance-critical scenario make sure to supply `RTPP_NODEBUG=1`
+when running the container.
+
+## Caveats and Limitations
 
 - Connection to the WSS server will fail with error `1015` in Firefox. It
   works in Chrome and Microsoft Edge as long as the user accepts the security
@@ -43,7 +52,7 @@ the `docker log` command. The amount of RTP logs can be controlled by the
 - Due to the need for a range of UDP ports for RTP sessions (2,000 by default),
   the usage of the `host` network is recommended.
 
-# Links and References
+## Links and References
 
 - [RTPProxy @ GitHub](https://github.com/sippy/rtpproxy/)
 - [Sippy B2BUA @ GitHub](https://github.com/sippy/b2bua/)
