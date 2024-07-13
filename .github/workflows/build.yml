@@ -37,6 +37,12 @@ jobs:
         repository: 'onsip/SIP.js'
         path: docker/SIP.js
 
+    - name: Checkout SaraPhone repo
+      uses: actions/checkout@v4
+      with:
+        repository: 'gmaruzz/saraphone'
+        path: docker/SIP.js/demo/saraphone
+
     - name: Checkout Sippy B2BUA repo
       uses: actions/checkout@v4
       with:
