@@ -33,10 +33,17 @@ fi
   -d "${RTPP_LOG_LEVEL}" -m "${MIN_RTP_PORT}" -M "${MAX_RTP_PORT}" &
 RTPP_PID="${!}"
 
+B2BUA_ARGS="--auth_enable=off --acct_enable=off --static_route=${OUTBOUND_ROUTE} \
+ -f --b2bua_socket=/tmp/b.sock --rtp_proxy_clients=${RSOCK} \
+ --allowed_pts=0,8,9,126,101 --wss_socket=0.0.0.0:9876:${CFILE}:${KFILE}"
+
+if [ ! -z "${OUTBOUND_PROXY}" ]
+then
+  B2BUA_ARGS="${B2BUA_ARGS} --sip_proxy=${OUTBOUND_PROXY}"
+fi
+
 PYTHONPATH="${BDIR}" python "${BDIR}/sippy/b2bua_radius.py" \
- --auth_enable=off --acct_enable=off --static_route="${OUTBOUND_ROUTE}" \
- -f --b2bua_socket=/tmp/b.sock --rtp_proxy_clients="${RSOCK}" \
- --allowed_pts=0,8,9,126,101 --wss_socket="0.0.0.0:9876:${CFILE}:${KFILE}" &
+ ${B2BUA_ARGS} &
 B2B_PID="${!}"
 
 wait -n
