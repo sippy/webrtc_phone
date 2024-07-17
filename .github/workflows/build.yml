@@ -42,7 +42,7 @@ jobs:
       with:
         repository: 'sippy/b2bua'
         path: docker/b2bua
-        ref: RFC7118
+        ref: master
 
     - name: Build SIP.js
       run: sh -x build/SIP.js.sh
