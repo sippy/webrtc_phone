@@ -13,11 +13,15 @@ COPY docker /webrtc_phone/
 # Build & install everything
 RUN /webrtc_phone/build.sh
 
-ENV HTTPS_PORT=4430
+ENV HTTPS_PORT=443
 ENV WSS_PORT=9876
 
 EXPOSE ${HTTPS_PORT}
 EXPOSE ${WSS_PORT}
 EXPOSE 32000-34000/udp
+
+RUN chown root:nogroup server.crt server.key && \
+ chmod 640 server.crt server.key
+USER nobody
 
 ENTRYPOINT [ "/webrtc_phone/run.sh" ]

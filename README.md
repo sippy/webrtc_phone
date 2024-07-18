@@ -25,7 +25,9 @@ destination controlled by the `OUTBOUND_ROUTE` environment variable.
 
 ```bash
 docker pull sippylabs/webrtc_phone:latest
-docker run -it --name webrtc_phone -P --network=host -e OUTBOUND_ROUTE="user@sip.mypbx.net;auth=foo:bar" -d sippylabs/webrtc_phone:latest
+docker run -it --name webrtc_phone -P --network=host \
+ -e OUTBOUND_ROUTE="sip.mypbx.net" -e OUTBOUND_PROXY="sip.mypbx.net" \
+ -d sippylabs/webrtc_phone:latest
 ```
 
 ## Introspection

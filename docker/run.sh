@@ -15,7 +15,7 @@ WSS_PORT="${WSS_PORT:-"9876"}"
 MIN_RTP_PORT=32000
 MAX_RTP_PORT=34000
 
-RSOCK="/webrtc_phone/rtpproxy.sock"
+RSOCK="/tmp/rtpproxy.sock"
 RMODDIR="/usr/local/lib/rtpproxy"
 
 BDIR="/webrtc_phone/b2bua"
@@ -35,7 +35,7 @@ fi
 RTPP_PID="${!}"
 
 B2BUA_ARGS="--auth_enable=off --acct_enable=off --static_route=${OUTBOUND_ROUTE} \
- -f --b2bua_socket=/tmp/b.sock --rtp_proxy_clients=${RSOCK} \
+ -f --b2bua_socket=/tmp/b2b.sock --rtp_proxy_clients=${RSOCK} \
  --allowed_pts=0,8,9,126,101 --wss_socket=0.0.0.0:${WSS_PORT}:${CFILE}:${KFILE}"
 
 if [ ! -z "${OUTBOUND_PROXY}" ]
