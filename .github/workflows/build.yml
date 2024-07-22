@@ -82,8 +82,13 @@ jobs:
           type=raw,value=latest,enable={{is_default_branch}}
           type=sha
 
+    - name: Get branch name
+      run: echo "GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
+
     - name: Build Docker image
       uses: docker/build-push-action@v6
+      env:
+        CACHE_SPEC: "type=registry,ref=${{ env.DOCKER_REPO }}:${{ env.GIT_BRANCH }}-buildcache"
       with:
         context: .
         file: ./Dockerfile
@@ -93,6 +98,8 @@ jobs:
           ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         platforms: ${{ env.PLATFORMS }}
+        cache-from: ${{ env.CACHE_SPEC }}
+        cache-to: ${{ env.CACHE_SPEC }},mode=max
 
     - name: Update DockerHub repo description
       if: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}

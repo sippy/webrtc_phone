@@ -10,7 +10,7 @@ apt-get -y --no-install-recommends update -qq
 apt-get -y --no-install-recommends install python-is-python3 python3-pip npm \
   libcap2-bin ${DEV_PKGS}
 
-python3 -m pip install --break-system-packages -U -r b2bua/requirements.txt
+python3 -m pip install --break-system-packages -U -r requirements.txt
 npm install -g http-server
 
 echo "logs-max=0" >> /usr/share/nodejs/npm/npmrc
