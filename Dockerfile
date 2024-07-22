@@ -1,5 +1,5 @@
-ARG BASE_IMAGE
-FROM --platform=$TARGETPLATFORM $BASE_IMAGE as build
+ARG BASE_IMAGE="sippylabs/rtpproxy:latest"
+FROM --platform=$TARGETPLATFORM $BASE_IMAGE AS build
 LABEL maintainer="Maksym Sobolyev <sobomax@sippysoft.com>"
 
 USER root
