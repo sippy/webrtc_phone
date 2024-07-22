@@ -5,7 +5,7 @@ set -x
 
 OUTBOUND_ROUTE="${OUTBOUND_ROUTE:-"0100@192.168.23.52;auth=nopass"}"
 RTPP_LOG_LEVEL="${RTPP_LOG_LEVEL:-"info"}"
-RTPP_NODEBUG="${RTPP_NODEBUG:0}"
+RTPP_NODEBUG="${RTPP_NODEBUG:-0}"
 
 CFILE="/webrtc_phone/server.crt"
 KFILE="/webrtc_phone/server.key"
