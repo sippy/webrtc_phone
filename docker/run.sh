@@ -10,7 +10,8 @@ RTPP_NODEBUG="${RTPP_NODEBUG:-0}"
 CFILE="/webrtc_phone/server.crt"
 KFILE="/webrtc_phone/server.key"
 WROOT="/webrtc_phone/SIP.js/demo"
-PNUM=443
+HTTPS_PORT="${HTTPS_PORT:-"443"}"
+WSS_PORT="${WSS_PORT:-"9876"}"
 MIN_RTP_PORT=32000
 MAX_RTP_PORT=34000
 
@@ -19,7 +20,7 @@ RMODDIR="/usr/local/lib/rtpproxy"
 
 BDIR="/webrtc_phone/b2bua"
 
-npm exec -- http-server -S -C "${CFILE}" -K "${KFILE}" -p ${PNUM} "${WROOT}" &
+npm exec -- http-server -S -C "${CFILE}" -K "${KFILE}" -p ${HTTPS_PORT} "${WROOT}" &
 HSERV_PID="${!}"
 
 if [ ${RTPP_NODEBUG} -eq 0 ]
@@ -35,7 +36,7 @@ RTPP_PID="${!}"
 
 B2BUA_ARGS="--auth_enable=off --acct_enable=off --static_route=${OUTBOUND_ROUTE} \
  -f --b2bua_socket=/tmp/b.sock --rtp_proxy_clients=${RSOCK} \
- --allowed_pts=0,8,9,126,101 --wss_socket=0.0.0.0:9876:${CFILE}:${KFILE}"
+ --allowed_pts=0,8,9,126,101 --wss_socket=0.0.0.0:${WSS_PORT}:${CFILE}:${KFILE}"
 
 if [ ! -z "${OUTBOUND_PROXY}" ]
 then
