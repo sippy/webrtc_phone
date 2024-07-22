@@ -12,22 +12,28 @@ WebRTC-compatible clients. It includes four main components:
 3. SIP.js demo application.
 4. Web server.
 
+## How it works
+
 The container starts RTPProxy and B2BUA listening on WSS port `9876/TCP`, and
 a web server on HTTPS port `443/TCP`. Both share the same self-signed TLS key
 generated during the container build process. This allows users to open the
 demo page and connect their browser to the B2BUA over WSS.
 
+Any registation attempts coming via the WSS socker are proxied to the external
+SIP registrar controlled by the `OUTBOUND_PROXY` environment variable via
+`SIP/UDP`.
+
 When the user initiates a call, the B2BUA/RTPProxy sets up two RTP sessions
 (one encrypted and one plain) and initiates an outbound SIP call to the SIP
 destination controlled by the `OUTBOUND_ROUTE` environment variable.
+When no `OUTBOUND_ROUTE` is provided, `OUTBOUND_PROXY` will be used instead.
 
 ## Usage
 
 ```bash
 docker pull sippylabs/webrtc_phone:latest
 docker run -it --name webrtc_phone -P --network=host \
- -e OUTBOUND_ROUTE="sip.mypbx.net" -e OUTBOUND_PROXY="sip.mypbx.net" \
- -d sippylabs/webrtc_phone:latest
+ -e OUTBOUND_PROXY="sip.mypbx.net" -d sippylabs/webrtc_phone:latest
 ```
 
 ## Introspection

@@ -10,10 +10,11 @@ USER root
 ENV DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /tmp
-COPY docker/build.sh docker/b2bua/requirements.txt /tmp
 
 # Build & install everything
-RUN ./build.sh
+RUN --mount=type=bind,source=docker/build.sh,target=build.sh \
+    --mount=type=bind,source=docker/b2bua/requirements.txt,target=requirements.txt \
+    ./build.sh
 
 ENV WRP_ROOT="/webrtc_phone"
 WORKDIR ${WRP_ROOT}
@@ -28,8 +29,11 @@ USER nobody
 ENV HTTPS_PORT=443
 ENV WSS_PORT=9876
 
+ENV MIN_RTP_PORT=32000
+ENV MAX_RTP_PORT=34000
+
 EXPOSE ${HTTPS_PORT}
 EXPOSE ${WSS_PORT}
-EXPOSE 32000-34000/udp
+EXPOSE ${MIN_RTP_PORT}-${MAX_RTP_PORT}/udp
 
 ENTRYPOINT [ "./run.sh" ]
