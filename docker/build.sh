@@ -18,8 +18,8 @@ echo "update-notifier=0" >> /usr/share/nodejs/npm/npmrc
 echo "cache=/tmp/.npm_cache" >> /usr/share/nodejs/npm/npmrc
 setcap 'cap_net_bind_service=+ep' /usr/bin/node
 
-apt-get -y remove ${DEV_PKGS}
-apt-get -y autoremove
+apt-get -y remove --purge ${DEV_PKGS}
+apt-get -y autoremove --purge
 apt-get -y clean
 
 rm -rf ~/.cache
