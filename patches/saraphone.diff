@@ -1,0 +1,18 @@
+diff --git a/saraphone.html b/saraphone.html
+index 7c8de2a..8193408 100644
+--- a/saraphone.html
++++ b/saraphone.html
+@@ -93,8 +93,12 @@ var audio_silence = new Audio("wav/silence.wav");
+                                                 <tr> 
+                                                    <td> <input style="background-color: black;" size=25 id="proxy" value="fusion03-pkg.opentelecom.it" /></td><td>&nbsp;WSS&nbsp;Proxy&nbsp;Name&nbsp;</td> 
+                                                 </tr> 
++                                                <script>
++                                                   document.getElementById('domain').value = window.location.hostname;
++                                                   document.getElementById('proxy').value = window.location.hostname;
++                                                </script>
+                                                 <tr> 
+-                                                    <td> <input style="background-color: black;" size=25 id="port" value="7443" /></td><td>&nbsp;WSS&nbsp;Proxy&nbsp;Port&nbsp;</td> 
++                                                    <td> <input style="background-color: black;" size=25 id="port" value="9876" /></td><td>&nbsp;WSS&nbsp;Proxy&nbsp;Port&nbsp;</td>
+                                                 </tr> 
+                                                 <tr> 
+                                                     <td> <input style="background-color: black;" size=25 id="pres1" value="1011" /></td><td>&nbsp;BLF1&nbsp;</td> 
