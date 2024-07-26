@@ -11,18 +11,85 @@ index ffc09dbd..79ca0bae 100644
  serverSpan.innerHTML = webSocketServer;
  
  // Destination URI
+diff --git a/demo/demo-2.ts b/demo/demo-2.ts
+index 1c0b6a52..18bf135d 100644
+--- a/demo/demo-2.ts
++++ b/demo/demo-2.ts
+@@ -4,6 +4,7 @@
+ /* eslint-disable @typescript-eslint/no-use-before-define */
+ import { SimpleUser, SimpleUserDelegate, SimpleUserOptions } from "../lib/platform/web/index.js";
+ import { nameAlice, nameBob, uriAlice, uriBob, webSocketServerAlice, webSocketServerBob } from "./demo-users.js";
++import { usernameAlice, passwordAlice, usernameBob, passwordBob } from "./demo-users.js";
+ import { getButton, getInput, getVideo } from "./demo-utils.js";
+ 
+ const connectAlice = getButton("connectAlice");
+@@ -43,7 +44,9 @@ const alice = buildUser(
+   holdAlice,
+   muteAlice,
+   videoLocalAlice,
+-  videoRemoteAlice
++  videoRemoteAlice,
++  usernameAlice,
++  passwordAlice
+ );
+ 
+ // New SimpleUser for Bob
+@@ -62,7 +65,9 @@ const bob = buildUser(
+   holdBob,
+   muteBob,
+   videoLocalBob,
+-  videoRemoteBob
++  videoRemoteBob,
++  usernameBob,
++  passwordBob
+ );
+ 
+ if (!alice || !bob) {
+@@ -84,7 +89,9 @@ function buildUser(
+   holdCheckbox: HTMLInputElement,
+   muteCheckbox: HTMLInputElement,
+   videoLocalElement: HTMLVideoElement,
+-  videoRemoteElement: HTMLVideoElement
++  videoRemoteElement: HTMLVideoElement,
++  username: string,
++  password: string
+ ): SimpleUser {
+   console.log(`Creating "${name}" <${aor}>...`);
+ 
+@@ -106,7 +113,9 @@ function buildUser(
+     },
+     userAgentOptions: {
+       // logLevel: "debug",
+-      displayName
++      displayName,
++      authorizationUsername: username,
++      authorizationPassword: password
+     }
+   };
+ 
 diff --git a/demo/demo-users.ts b/demo/demo-users.ts
-index a1591244..f47329df 100644
+index a1591244..ec997686 100644
 --- a/demo/demo-users.ts
 +++ b/demo/demo-users.ts
-@@ -33,8 +33,8 @@ const domain = "sipjs.onsip.com";
+@@ -29,12 +29,16 @@ if (token === "") {
+ 
+ // The demos uses unauthenticated users on the "sipjs.onsip.com" demo domain.
+ // The demos uses OnSIP's WebSocket Server which hosts the "sipjs.onsip.com" demo domain.
+-const domain = "sipjs.onsip.com";
++const domain = `${window.location.hostname}`;
  
  export const nameAlice = "Alice";
- export const uriAlice = "sip:alice." + token + "@" + domain;
+-export const uriAlice = "sip:alice." + token + "@" + domain;
 -export const webSocketServerAlice = "wss://edge.sip.onsip.com";
++export const uriAlice = "sip:alice" + "@" + domain;
 +export const webSocketServerAlice = `wss://${window.location.hostname}:9876`;
++export const usernameAlice = "alice"; // Alice's username
++export const passwordAlice = "alicePassword"; // Alice's password
  
  export const nameBob = "Bob";
- export const uriBob = "sip:bob." + token + "@" + domain;
+-export const uriBob = "sip:bob." + token + "@" + domain;
 -export const webSocketServerBob = "wss://edge.sip.onsip.com";
++export const uriBob = "sip:bob" + "@" + domain;
 +export const webSocketServerBob = `wss://${window.location.hostname}:9876`;
++export const usernameBob = "bob"; // Bob's username
++export const passwordBob = "bobPassword"; // Bob's password

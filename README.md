@@ -56,7 +56,7 @@ when running the container.
   works in Chrome and Microsoft Edge as long as the user accepts the security
   warning when opening the demo page. This is caused by the usage of the
   self-signed certificate.
-- Only `Demo 1` works.
+- Only `Demo 1` and `Demo 2` works.
 - Due to the need for a range of UDP ports for RTP sessions (2,000 by default),
   the usage of the `host` network is recommended.
 
