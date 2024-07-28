@@ -20,7 +20,7 @@ permissions:
 jobs:
   Docker:
     name: Build&Push to DockerHub
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
     env:
       DOCKER_REPO: sippylabs/webrtc_phone
       BASE_IMAGE: sippylabs/rtpproxy:latest-ubuntu_latest
