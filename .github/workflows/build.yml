@@ -58,8 +58,6 @@ jobs:
     - name: Set up QEMU
       id: qemu
       uses: docker/setup-qemu-action@v3
-      with:
-        platforms: arm64,arm,riscv64,mips64le,ppc64le,s390x
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -88,7 +86,8 @@ jobs:
       run: |
         echo "GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
         PLATFORMS="`docker manifest inspect ${{ env.BASE_IMAGE }} | jq -r '.manifests[] | \
-          "\(.platform.os)/\(.platform.architecture)"' | sort -u | grep -v unknown | paste -sd ','`"
+          "\(.platform.os)/\(.platform.architecture)\(if .platform.variant != null then "/\(.platform.variant)" else "" end)"' | \
+          sort -u | grep -v unknown | paste -sd ','`"
         echo "PLATFORMS=${PLATFORMS}" >> $GITHUB_ENV
 
     - name: Build Docker image
