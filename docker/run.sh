@@ -54,7 +54,7 @@ then
   B2BUA_ARGS="${B2BUA_ARGS} --sip_proxy=${OUTBOUND_PROXY}"
 fi
 
-PYTHONPATH="${BDIR}" python "${BDIR}/sippy/b2bua_radius.py" \
+PYTHONPATH="${BDIR}" python "${BDIR}/sippy/b2bua.py" \
  ${B2BUA_ARGS} &
 B2B_PID="${!}"
 
