@@ -84,20 +84,33 @@ jobs:
 
     - name: Set build environment
       run: |
-        echo "GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
+        GIT_BRANCH="${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"
         PLATFORMS="`docker manifest inspect ${{ env.BASE_IMAGE }} | jq -r '.manifests[] | \
           "\(.platform.os)/\(.platform.architecture)\(if .platform.variant != null then "/\(.platform.variant)" else "" end)"' | \
           sort -u | grep -v unknown | paste -sd ','`"
+        BUILD_IMAGE="${DOCKER_REPO}:${GIT_BRANCH}"
+        if [ "${{ github.event_name }}" != 'pull_request' ]; \
+        then \
+          PIP_CACHE_IMAGE="${BUILD_IMAGE}"; \
+          CACHE_SPEC="type=registry,ref=${DOCKER_REPO}:${GIT_BRANCH}-buildcache"; \
+          docker manifest inspect ${PIP_CACHE_IMAGE} >/dev/null 2>/dev/null || PIP_CACHE_IMAGE="scratch"; \
+        else \
+          PIP_CACHE_IMAGE="scratch"; \
+          CACHE_SPEC="gha"; \
+        fi
+        echo "GIT_BRANCH=${GIT_BRANCH}" >> $GITHUB_ENV
         echo "PLATFORMS=${PLATFORMS}" >> $GITHUB_ENV
+        echo "PIP_CACHE_IMAGE=${PIP_CACHE_IMAGE}" >> $GITHUB_ENV
+        echo "CACHE_SPEC=${CACHE_SPEC}" >> $GITHUB_ENV
 
     - name: Build Docker image
       uses: docker/build-push-action@v6
-      env:
-        CACHE_SPEC: "type=registry,ref=${{ env.DOCKER_REPO }}:${{ env.GIT_BRANCH }}-buildcache"
       with:
         context: .
         file: ./Dockerfile
-        build-args: BASE_IMAGE=${{ env.BASE_IMAGE }}
+        build-args: |
+          BASE_IMAGE=${{ env.BASE_IMAGE }}
+          PIP_CACHE_IMAGE=${{ env.PIP_CACHE_IMAGE }}
         push: ${{ env.DOCKER_RW }}
         tags: |
           ${{ steps.meta.outputs.tags }}
