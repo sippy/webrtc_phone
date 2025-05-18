@@ -48,7 +48,7 @@ jobs:
       with:
         repository: 'sippy/b2bua'
         path: docker/b2bua
-        ref: master
+        ref: rtp.io
 
     - name: Build SIP.js & SaraPhone
       run: |
