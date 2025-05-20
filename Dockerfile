@@ -42,6 +42,8 @@ WORKDIR ${WRP_ROOT}
 COPY --exclude=.git* --exclude=*.ts docker/SIP.js/demo \
  ${WRP_ROOT}/SIP.js/demo
 COPY --exclude=.git --exclude=.github docker/b2bua ${WRP_ROOT}/b2bua
+COPY UI ${WRP_ROOT}/UI
+COPY docker/SIP.js/demo/dist/demo-1.js ${WRP_ROOT}/UI/static/webrtc_phone.js
 COPY docker/server.crt docker/server.key docker/run.sh ${WRP_ROOT}
 RUN chown root:nogroup server.crt server.key && \
  chmod 640 server.crt server.key

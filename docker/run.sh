@@ -31,9 +31,6 @@ then
   fi
 fi
 
-npm exec -- http-server -S -C "${CFILE}" -K "${KFILE}" -p ${HTTPS_PORT} "${WROOT}" &
-HSERV_PID="${!}"
-
 if [ ${RTPP_NODEBUG} -eq 0 ]
 then
   RTPP_SUXX="_debug"
@@ -51,18 +48,23 @@ else
  B2BUA_RSOCK="rtp.io:modules=ice_lite+dtls_gw;-d;${RTPP_LOG_LEVEL};-m;${MIN_RTP_PORT};-M;${MAX_RTP_PORT}"
 fi
 
+B2BUA_UIPARAMS='--uiparams=ssl_context='"${CFILE},${KFILE}"';host=0.0.0.0;port='"${HTTPS_PORT}"';customizer=webrtc_phone:customize'
 B2BUA_ARGS="--auth_enable=off --acct_enable=off --static_route=${OUTBOUND_ROUTE} \
- -f --b2bua_socket=/tmp/b2b.sock --rtp_proxy_client="${B2BUA_RSOCK}" --accept_ips=[[WSS]],[[PROXY]] \
+ -f --b2bua_socket=/tmp/b2b.sock --rtp_proxy_client=${B2BUA_RSOCK} --accept_ips=[[WSS]],[[PROXY]] \
  --allowed_pts=[G722/8000],[PCMU/8000],[PCMA/8000],[telephone-event/8000],[VP8/90000] \
- --wss_socket=0.0.0.0:${WSS_PORT}:${CFILE}:${KFILE}"
+ --wss_socket=0.0.0.0:${WSS_PORT}:${CFILE}:${KFILE} --ui=on ${B2BUA_UIPARAMS}"
 
 if [ ! -z "${OUTBOUND_PROXY}" ]
 then
   B2BUA_ARGS="${B2BUA_ARGS} --sip_proxy=${OUTBOUND_PROXY}"
 fi
+if [ ! -z "${SIPREC_TARGET}" ]
+then
+  B2BUA_ARGS="${B2BUA_ARGS} --siprec_target=${SIPREC_TARGET}"
+fi
 
-PYTHONPATH="${BDIR}" python "${BDIR}/sippy/b2bua.py" \
+PYTHONPATH="${WRP_ROOT}/UI:${BDIR}" python "${BDIR}/sippy/b2bua.py" \
  ${B2BUA_ARGS} &
 B2B_PID="${!}"
 
-wait -n
+wait

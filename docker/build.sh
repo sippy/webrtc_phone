@@ -4,18 +4,16 @@ set -x
 set -e
 
 DEV_PKGS="libc6-dev gcc git make python3-dev"
-NPM_RC="/usr/share/nodejs/npm/npmrc"
 PYTHON_CMD="python3"
 PIP_I_CMD="${PYTHON_CMD} -m pip install --break-system-packages -U"
-RTP_IO_VER="445b5a5a3c1"
+RTP_IO_VER="5c282725aeb"
 WHEEL_D="/root/.cache/pip/wheels/${RTP_IO_VER}"
 PIP_W_CMD="${PYTHON_CMD} -m pip wheel --wheel-dir=${WHEEL_D}"
 
 build_depends() {
   apt-get -y --no-install-recommends update -qq
-  apt-get -y --no-install-recommends install python-is-python3 python3-pip npm \
+  apt-get -y --no-install-recommends install python-is-python3 python3-pip \
     libcap2-bin ${DEV_PKGS}
-  npm install -g http-server
 }
 
 build_wheels() {
@@ -41,10 +39,7 @@ get_py_bin() {
 build_requirements() {
   ${PIP_I_CMD} -r requirements.txt
 
-  echo "logs-max=0" >> /usr/share/nodejs/npm/npmrc
-  echo "update-notifier=0" >> /usr/share/nodejs/npm/npmrc
-  echo "cache=/tmp/.npm_cache" >> /usr/share/nodejs/npm/npmrc
-  setcap 'cap_net_bind_service=+ep' /usr/bin/node
+  setcap 'cap_net_bind_service=+ep' "`get_py_bin ${PYTHON_CMD}`"
 
   apt-get -y remove --purge ${DEV_PKGS}
   apt-get -y autoremove --purge
