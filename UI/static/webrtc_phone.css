@@ -1,0 +1,33 @@
+audio {
+  margin: 8px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+button {
+  width: 100px;
+  margin: 8px;
+}
+
+input {
+  margin: 8px;
+}
+
+.dtmf {
+  margin: 8px;
+}
+
+.webrtc-phone-box {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+    text-align: left;
+}
